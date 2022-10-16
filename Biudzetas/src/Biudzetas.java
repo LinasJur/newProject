@@ -1,4 +1,3 @@
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -7,63 +6,63 @@ public class Biudzetas {
 
 
 
-    Scanner sc = new Scanner(System.in);
+    static Scanner sc = new Scanner(System.in);
     int pridekPajamas = 0;
     int pridekIslaidas = 0;
-    List<PajamuIrasas> pajamuSarasas = new ArrayList<>();
-    List<IslaiduIrasas> islaiduSarasas = new ArrayList<>();
+
+    List<Irasas> irasai = new ArrayList<Irasas>();
 
 
-    public void pridetiPajamuIrasa(Scanner sc){
-        System.out.println("Iveskite suma:");
-        double suma = sc.nextDouble();
-        System.out.println("Iveskite kategorija:");
-        String kategorija = sc.nextLine();
-        System.out.println("Iveskite papildoma informacija");
-        String papildomaInfo = sc.nextLine();
-        System.out.println("Iveskite atsiskaitymo buda (grynais/pavedimu)");
-        String atsiskaitymoBudas = sc.nextLine();
-        String data = String.valueOf(LocalDateTime.now());
-        PajamuIrasas pridekPajamas = new PajamuIrasas(suma, data, kategorija, papildomaInfo, atsiskaitymoBudas);
-        pajamuSarasas.add(pridekPajamas);
-    }
 
-    public void pridetiIslaiduIrasa(Scanner sc){
-        System.out.println("Iveskite suma:");
-        double suma = sc.nextDouble();
-        System.out.println("Iveskite kategorija:");
-        String kategorija = sc.nextLine();
-        System.out.println("Iveskite papildoma informacija");
-        String papildomaInfo = sc.nextLine();
-        System.out.println("Iveskite atsiskaitymo buda (grynais/pavedimu)");
-        String atsiskaitymoBudas = sc.nextLine();
-        String data = String.valueOf(LocalDateTime.now());
-        IslaiduIrasas pridekIslaidas = new IslaiduIrasas(suma, data, kategorija, papildomaInfo, atsiskaitymoBudas);
-        islaiduSarasas.add(pridekIslaidas);
-    }
-
-    public void gautiPajamuIrasa(){
-        pajamuSarasas.toString();
+    public void pridetiIrasa(Irasas irasas){
+        this.irasai.add(irasas);
 
     }
-    public void gautiIslaiduIrasa() {
-        islaiduSarasas.toString();
 
+    public List<Irasas> gautiPajamuIrasus(){
+        List<Irasas> pajamuSarasas = new ArrayList<>();
+        for (Irasas irasas : irasai){
+            if (irasas instanceof PajamuIrasas){
+                pajamuSarasas.add(irasas);
+            }
+        }
+        return pajamuSarasas;
     }
-    //public void pridetiPajamuIrasa(double suma, String data, String kategorija, String papildomaInfo, String atsiskaitymoBudas){
+    public List<Irasas> gautiIslaiduIrasus(){
+        List<Irasas> islaiduSarasas = new ArrayList<>();
+        for (Irasas irasas : irasai){
+            if (irasas instanceof IslaiduIrasas){
+                islaiduSarasas.add(irasas);
+            }
+        }
+        return islaiduSarasas;
+    }
+    public double balansas (){
+        double balansas = 0;
+       for (Irasas irasas : irasai){
+           if (irasas instanceof PajamuIrasas){
+               balansas += irasas.getSuma();
+           } else if (irasas instanceof IslaiduIrasas){
+               balansas -= irasas.getSuma();
+           }
+       }
+        return balansas;
+    }
 
+    public List<Irasas> visiIrasai() {
+        return irasai;
+    }
 
-       // PajamuIrasas[] pajamos = new PajamuIrasas[100];
-       // PajamuIrasas pridekPajamas = new PajamuIrasas(suma, data, kategorija, papildomaInfo);
-       // pajamuSarasas.add(pridekPajamas);
-
+    public boolean trinkIrasa(double id) {
+        Irasas trinamasIrasas = new Irasas();
+        trinamasIrasas.setId(id);
+        return irasai.remove(trinamasIrasas);
+    }
+    public boolean atnaujintiIrasa(Irasas irasas){
+        trinkIrasa(irasas.getId());
+        return irasai.add(irasas);
+    }
 }
-    //public void pridetiIslaiduIrasa(String data, double suma, String kategorija, String papildomaInfo, String atsiskaitymoBudas ){
-
-        //   IslaiduIrasas[] islaidos = new IslaiduIrasas[0];
-        //  islaidos[pridekIslaidas] = new IslaiduIrasas(data, suma, kategorija, papildomaInfo, atsiskaitymoBudas);
-        // //  pridekIslaidas++;
-        // }
 
 
 
